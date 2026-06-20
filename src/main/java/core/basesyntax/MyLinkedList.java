@@ -1,7 +1,6 @@
 package core.basesyntax;
 
 import java.util.List;
-import java.util.Objects;
 
 public class MyLinkedList<T> implements MyLinkedListInterface<T> {
     private Node<T> head;
@@ -10,7 +9,7 @@ public class MyLinkedList<T> implements MyLinkedListInterface<T> {
 
     @Override
     public void add(T value) {
-        Node<T> newNode = new Node<>(value);
+        Node<T> newNode = new Node<>(tail, value, null);
         if (head == null) {
             head = newNode;
             tail = newNode;
@@ -27,7 +26,7 @@ public class MyLinkedList<T> implements MyLinkedListInterface<T> {
         if (index < 0 || index > size) {
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
         }
-        Node<T> newNode = new Node<>(value);
+        Node<T> newNode = new Node<>(null, value, head);
         if (head == null) {
             head = newNode;
             tail = newNode;
@@ -91,7 +90,7 @@ public class MyLinkedList<T> implements MyLinkedListInterface<T> {
     public boolean remove(T object) {
         Node<T> current = head;
         while (current != null) {
-            if (Objects.equals(current.value, object)) {
+            if (current.value == object || (current.value != null && current.value.equals(object))) {
                 unlink(current);
                 return true;
             }
@@ -110,15 +109,7 @@ public class MyLinkedList<T> implements MyLinkedListInterface<T> {
         return size == 0;
     }
 
-    private class Node<T> {
-        private T value;
-        private Node<T> next;
-        private Node<T> prev;
 
-        public Node(T value) {
-            this.value = value;
-        }
-    }
 
     private Node<T> unlink(Node<T> node) {
         Node<T> prev = node.prev;
@@ -161,6 +152,18 @@ public class MyLinkedList<T> implements MyLinkedListInterface<T> {
     private void checkIndex(int index) {
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
+        }
+    }
+
+    private class Node<T> {
+        private T value;
+        private Node<T> next;
+        private Node<T> prev;
+
+        public Node(Node<T> prev, T value, Node<T> next) {
+            this.prev = prev;
+            this.value = value;
+            this.next = next;
         }
     }
 }
