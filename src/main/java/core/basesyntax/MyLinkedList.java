@@ -24,27 +24,36 @@ public class MyLinkedList<T> implements MyLinkedListInterface<T> {
 
     @Override
     public void add(T value, int index) {
-        Node<T> newNode = new Node<>(value);
-        if (index >= 0 && index <= size) {
-            if (head == null) {
-                head = newNode;
-                tail = newNode;
-            } else if (index == 0) {
-                newNode.next = head;
-                newNode.prev = null;
-                head.prev = newNode;
-                head = newNode;
-            } else if (index == size) {
-                newNode.prev = tail;
-                tail.next = newNode;
-                tail = newNode;
-            }
-            Node<T> current = findNodeByIndex(index);
-            newNode.next = current;
-            newNode.prev = current.prev;
-            current.prev.next = newNode;
-            current.prev = newNode;
+        if (index < 0 || index > size) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
         }
+        Node<T> newNode = new Node<>(value);
+        if (head == null) {
+            head = newNode;
+            tail = newNode;
+            size++;
+            return;
+        }
+        if (index == 0) {
+            newNode.next = head;
+            head.prev = newNode;
+            head = newNode;
+            size++;
+            return;
+        }
+        if (index == size) {
+            newNode.prev = tail;
+            tail.next = newNode;
+            tail = newNode;
+            size++;
+            return;
+        }
+        Node<T> current = findNodeByIndex(index);
+        newNode.next = current;
+        newNode.prev = current.prev;
+        current.prev.next = newNode;
+        current.prev = newNode;
+        size++;
     }
 
     @Override
