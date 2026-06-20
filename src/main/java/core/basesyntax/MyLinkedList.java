@@ -29,14 +29,12 @@ public class MyLinkedList<T> implements MyLinkedListInterface<T> {
             if (head == null) {
                 head = newNode;
                 tail = newNode;
-            }
-            else if (index == 0) {
+            } else if (index == 0) {
                 newNode.next = head;
                 newNode.prev = null;
                 head.prev = newNode;
                 head = newNode;
-            }
-            else if (index == size) {
+            } else if (index == size) {
                 newNode.prev = tail;
                 tail.next = newNode;
                 tail = newNode;
